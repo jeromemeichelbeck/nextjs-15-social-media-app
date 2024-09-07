@@ -69,6 +69,7 @@ export async function signup(
     }
 
     console.error(error);
+
     return {
       error: "Something went wrong. Please try again.",
     };

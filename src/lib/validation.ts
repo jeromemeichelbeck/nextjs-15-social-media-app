@@ -15,6 +15,12 @@ export const signupSchema = z.object({
 
 export type SignupValues = z.infer<typeof signupSchema>;
 
+export const signupDefaultValues = {
+  email: "",
+  username: "",
+  password: "",
+} satisfies SignupValues;
+
 // Login
 export const loginSchema = z.object({
   username: requiredString,
@@ -22,3 +28,8 @@ export const loginSchema = z.object({
 });
 
 export type LoginValues = z.infer<typeof loginSchema>;
+
+export const loginDefaultsValues = {
+  username: "",
+  password: "",
+} satisfies LoginValues;

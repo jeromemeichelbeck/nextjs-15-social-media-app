@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import signupImage from "@/assets/signup-image.jpg";
 import Image from "next/image";
 import Link from "next/link";
+import SignupForm from "@/app/(auth)/signup/SignupForm";
 
 export const metadata: Metadata = {
   title: "Signup",
@@ -20,7 +21,7 @@ export default function Page() {
             </p>
           </div>
           <div className="space-y-5">
-            Sign up form
+            <SignupForm />
             <Link href="/login" className="block text-center hover:underline">
               Aready have an account? Login
             </Link>

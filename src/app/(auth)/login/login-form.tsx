@@ -1,6 +1,6 @@
 "use client";
 
-import { signup } from "@/app/(auth)/signup/actions";
+import { login } from "@/app/(auth)/login/actions";
 import {
   Form,
   FormControl,
@@ -13,27 +13,27 @@ import { Input } from "@/components/ui/input";
 import LoadingButton from "@/components/ui/loading-button";
 import { PasswordInput } from "@/components/ui/password-input";
 import {
-  signupDefaultValues,
-  signupSchema,
-  SignupValues,
+  loginDefaultsValues,
+  loginSchema,
+  LoginValues,
 } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 
-export default function SignupForm() {
+export default function LoginForm() {
   const [formError, setFormError] = useState<string>();
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<SignupValues>({
-    resolver: zodResolver(signupSchema),
-    defaultValues: signupDefaultValues,
+  const form = useForm<LoginValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: loginDefaultsValues,
   });
 
-  async function onSubmit(values: SignupValues) {
+  async function onSubmit(values: LoginValues) {
     setFormError(undefined);
     startTransition(async () => {
-      const { error } = await signup(values);
+      const { error } = await login(values);
       if (error !== null) {
         setFormError(error);
       }
@@ -46,19 +46,6 @@ export default function SignupForm() {
         {formError ? (
           <p className="text-center text-destructive">{formError}</p>
         ) : null}
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="Email" type="email" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <FormField
           control={form.control}
           name="username"
@@ -86,7 +73,7 @@ export default function SignupForm() {
           )}
         />
         <LoadingButton type="submit" className="w-full" loading={isPending}>
-          Create account
+          Login
         </LoadingButton>
       </form>
     </Form>

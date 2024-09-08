@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Signup",
 };
 
-export default function Page() {
+export default function SignupPage() {
   return (
     <main className="flex h-screen items-center justify-center p-5">
       <div className="flex h-full max-h-[40rem] w-full max-w-[64rem] overflow-hidden rounded-2xl bg-card shadow-2xl">

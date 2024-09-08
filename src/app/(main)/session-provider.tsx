@@ -1,7 +1,7 @@
 "use client";
 
 import { Session, User } from "lucia";
-import { createContext, PropsWithChildren } from "react";
+import { createContext, PropsWithChildren, useContext } from "react";
 
 interface SessionContext {
   user: User;
@@ -17,4 +17,14 @@ export default function SessionProvider({
   return (
     <SessionContext.Provider value={value}>{children}</SessionContext.Provider>
   );
+}
+
+export function useSession() {
+  const context = useContext(SessionContext);
+
+  if (SessionContext === null) {
+    throw new Error("useSession must be used within a SessionProvider");
+  }
+
+  return context;
 }

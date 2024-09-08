@@ -1,6 +1,6 @@
 import { validateRequest } from "@/auth";
 
 export default async function Home() {
-  const { session } = await validateRequest();
-  return <main>Hello {session?.userId}</main>;
+  const { user } = await validateRequest();
+  return <main>Hello {user?.displayName}</main>;
 }

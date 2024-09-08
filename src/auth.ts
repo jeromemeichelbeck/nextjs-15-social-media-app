@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
 import { User as DbUser } from "@prisma/client";
-import { Lucia, User as AuthUser, Session } from "lucia";
+import { Lucia } from "lucia";
 import { cookies } from "next/headers";
 import { cache } from "react";
 
@@ -33,7 +33,7 @@ export const lucia = new Lucia(adapter, {
   getUserAttributes(databaseUserAttributes) {
     return Object.fromEntries(
       userAttributes.map((key) => [key, databaseUserAttributes[key]]),
-    );
+    ) as Pick<DbUser, (typeof userAttributes)[number]>;
   },
 });
 

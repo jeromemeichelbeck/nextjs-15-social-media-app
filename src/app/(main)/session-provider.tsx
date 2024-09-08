@@ -22,7 +22,7 @@ export default function SessionProvider({
 export function useSession() {
   const context = useContext(SessionContext);
 
-  if (SessionContext === null) {
+  if (context === null) {
     throw new Error("useSession must be used within a SessionProvider");
   }
 

@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState, useTransition } from "react";
 import { signup } from "@/app/(auth)/signup/actions";
+import { PasswordInput } from "@/components/ui/password-input";
 
 export default function SignupForm() {
   const [formError, setFormError] = useState<string>();
@@ -78,7 +79,7 @@ export default function SignupForm() {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder="Password" type="password" {...field} />
+                <PasswordInput placeholder="Password" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

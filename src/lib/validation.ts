@@ -33,3 +33,14 @@ export const loginDefaultsValues = {
   username: "",
   password: "",
 } satisfies LoginValues;
+
+// Post
+export const createPostSchema = z.object({
+  content: requiredString,
+});
+
+export type CreatePostValues = z.infer<typeof createPostSchema>;
+
+export const createPostDefaultValues = {
+  content: "",
+} satisfies CreatePostValues;

@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const pageSize = 2;
+    const pageSize = 10;
     const cursor = req.nextUrl.searchParams.get("cursor") || undefined;
 
     const posts = await prisma.post.findMany({

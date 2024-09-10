@@ -2,6 +2,7 @@
 
 import InfiniteScrollContainer from "@/components/infinite-scroll-container";
 import Post from "@/components/posts/post";
+import PostsLoadingSkeleton from "@/components/posts/posts-loading-skeleton";
 import { Button } from "@/components/ui/button";
 import kyInstance from "@/lib/ky";
 import { PostData, PostPage } from "@/lib/types";
@@ -32,13 +33,21 @@ export default function ForYouFeed() {
   const posts = data?.pages.flatMap((page) => page.posts) || [];
 
   if (status === "pending") {
-    return <Loader2Icon className="mx-auto animate-spin" />;
+    return <PostsLoadingSkeleton numberOfPosts={5} />;
   }
 
   if (status === "error") {
     return (
       <p className="text-center text-destructive">
         An error occured while loading posts
+      </p>
+    );
+  }
+
+  if (posts.length === 0 && !hasNextPage) {
+    return (
+      <p className="text-center text-muted-foreground">
+        No one has posted anything yet
       </p>
     );
   }

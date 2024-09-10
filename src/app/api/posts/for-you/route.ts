@@ -1,6 +1,6 @@
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
-import { PostData, postDataInclude, PostPage } from "@/lib/types";
+import { PostData, postDataInclude, PostsPage } from "@/lib/types";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
 
     const nextCursor = posts.length > pageSize ? posts[pageSize].id : null;
 
-    const data: PostPage = {
+    const data: PostsPage = {
       posts: posts.slice(0, pageSize),
       nextCursor,
     };

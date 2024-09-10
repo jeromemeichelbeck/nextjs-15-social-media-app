@@ -1,6 +1,11 @@
 import { validateRequest } from "@/auth";
+import PostEditor from "@/components/posts/editor/post-editor";
 
 export default async function Home() {
   const { user } = await validateRequest();
-  return <main>Hello {user?.displayName}</main>;
+  return (
+    <main className="w-full">
+      <PostEditor />
+    </main>
+  );
 }

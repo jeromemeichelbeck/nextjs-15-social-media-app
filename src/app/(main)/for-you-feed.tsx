@@ -3,10 +3,9 @@
 import InfiniteScrollContainer from "@/components/infinite-scroll-container";
 import Post from "@/components/posts/post";
 import PostsLoadingSkeleton from "@/components/posts/posts-loading-skeleton";
-import { Button } from "@/components/ui/button";
 import kyInstance from "@/lib/ky";
-import { PostData, PostsPage } from "@/lib/types";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { PostsPage } from "@/lib/types";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { Loader2Icon } from "lucide-react";
 
 export default function ForYouFeed() {

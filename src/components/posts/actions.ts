@@ -2,7 +2,72 @@
 
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
-import { getPostDataInclude } from "@/lib/types";
+import { getPostDataInclude, PostsPage } from "@/lib/types";
+
+export async function getForYouPosts(cursor: string | null) {
+  const { user } = await validateRequest();
+
+  if (user === null) {
+    throw new Error("Unauthorized");
+  }
+
+  const pageSize = 10;
+
+  const posts = await prisma.post.findMany({
+    include: getPostDataInclude(user.id),
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: pageSize + 1,
+    cursor: cursor ? { id: cursor } : undefined,
+  });
+
+  const nextCursor = posts.length > pageSize ? posts[pageSize].id : null;
+
+  const data: PostsPage = {
+    posts: posts.slice(0, pageSize),
+    nextCursor,
+  };
+
+  return data;
+}
+
+export async function getFollowingPosts(cursor: string | null) {
+  const { user } = await validateRequest();
+
+  if (user === null) {
+    throw new Error("Unauthorized");
+  }
+
+  const pageSize = 10;
+
+  const posts = await prisma.post.findMany({
+    include: getPostDataInclude(user.id),
+    where: {
+      author: {
+        followers: {
+          some: {
+            followerId: user.id,
+          },
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: pageSize + 1,
+    cursor: cursor ? { id: cursor } : undefined,
+  });
+
+  const nextCursor = posts.length > pageSize ? posts[pageSize].id : null;
+
+  const data: PostsPage = {
+    posts: posts.slice(0, pageSize),
+    nextCursor,
+  };
+
+  return data;
+}
 
 export async function deletePost(postId: string) {
   const { user } = await validateRequest();

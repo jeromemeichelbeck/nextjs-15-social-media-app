@@ -1,9 +1,9 @@
 "use client";
 
+import { followUser, unfollowUser } from "@/components/actions";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import useFollowerInfo from "@/hooks/useFollowerInfo";
-import kyInstance from "@/lib/ky";
 import { FollowerInfo } from "@/lib/types";
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -24,9 +24,7 @@ export default function FollowButton({
 
   const { mutate } = useMutation({
     mutationFn: () =>
-      data.isFollowedByUser
-        ? kyInstance.delete(`/api/users/${userId}/followers`)
-        : kyInstance.post(`/api/users/${userId}/followers`),
+      data.isFollowedByUser ? unfollowUser(userId) : followUser(userId),
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey });
 

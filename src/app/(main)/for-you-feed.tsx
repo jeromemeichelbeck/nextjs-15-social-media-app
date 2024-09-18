@@ -1,10 +1,9 @@
 "use client";
 
 import InfiniteScrollContainer from "@/components/infinite-scroll-container";
+import { getForYouPosts } from "@/components/posts/actions";
 import Post from "@/components/posts/post";
 import PostsLoadingSkeleton from "@/components/posts/posts-loading-skeleton";
-import kyInstance from "@/lib/ky";
-import { PostsPage } from "@/lib/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Loader2Icon } from "lucide-react";
 
@@ -18,13 +17,7 @@ export default function ForYouFeed() {
     status,
   } = useInfiniteQuery({
     queryKey: ["post-feed", "for-you"],
-    queryFn: ({ pageParam }) =>
-      kyInstance
-        .get(
-          "/api/posts/for-you",
-          pageParam ? { searchParams: { cursor: pageParam } } : {},
-        )
-        .json<PostsPage>(),
+    queryFn: ({ pageParam }) => getForYouPosts(pageParam),
     initialPageParam: null as string | null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });

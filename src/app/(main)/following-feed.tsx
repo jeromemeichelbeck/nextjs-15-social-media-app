@@ -1,10 +1,9 @@
 "use client";
 
 import InfiniteScrollContainer from "@/components/infinite-scroll-container";
+import { getFollowingPosts } from "@/components/posts/actions";
 import Post from "@/components/posts/post";
 import PostsLoadingSkeleton from "@/components/posts/posts-loading-skeleton";
-import kyInstance from "@/lib/ky";
-import { PostsPage } from "@/lib/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Loader2Icon } from "lucide-react";
 
@@ -18,13 +17,7 @@ export default function FollowingFeed() {
     status,
   } = useInfiniteQuery({
     queryKey: ["post-feed", "following"],
-    queryFn: ({ pageParam }) =>
-      kyInstance
-        .get(
-          "/api/posts/following",
-          pageParam ? { searchParams: { cursor: pageParam } } : {},
-        )
-        .json<PostsPage>(),
+    queryFn: ({ pageParam }) => getFollowingPosts(pageParam),
     initialPageParam: null as string | null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });

@@ -40,6 +40,9 @@ export default function FollowButton({
 
       return currentFollowSate;
     },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["post-feed"] });
+    },
     onError: (error, _variables, currentFollowSate) => {
       queryClient.setQueryData(queryKey, currentFollowSate);
       console.error(error);

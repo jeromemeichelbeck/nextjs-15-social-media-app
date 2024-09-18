@@ -10,8 +10,8 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "utsf.io",
-        pathname: `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`,
+        hostname: "utfs.io",
+        pathname: `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/*`,
       },
     ],
   },

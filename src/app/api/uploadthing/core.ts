@@ -1,7 +1,7 @@
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
 import { createUploadthing, FileRouter } from "uploadthing/next";
-import { UploadThingError } from "uploadthing/server";
+import { UploadThingError, UTApi } from "uploadthing/server";
 
 const f = createUploadthing();
 
@@ -19,7 +19,17 @@ export const fileRouter = {
       return { user };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      const avatarUrl = file.url.replace(
+      const oldAvatarUrl = metadata.user.avatarUrl;
+
+      if (oldAvatarUrl) {
+        const [_, key] = oldAvatarUrl.split(
+          `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`,
+        );
+
+        await new UTApi().deleteFiles(key);
+      }
+
+      const newAvatarUrl = file.url.replace(
         "/f/",
         `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`,
       );
@@ -27,12 +37,12 @@ export const fileRouter = {
       await prisma.user.update({
         where: { id: metadata.user.id },
         data: {
-          avatarUrl,
+          avatarUrl: newAvatarUrl,
         },
       });
 
       return {
-        avatarUrl,
+        avatarUrl: newAvatarUrl,
       };
     }),
 } satisfies FileRouter;

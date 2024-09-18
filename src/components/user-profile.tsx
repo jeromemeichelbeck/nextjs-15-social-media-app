@@ -1,3 +1,4 @@
+import EditProfileButton from "@/app/(main)/users/[username]/edit-profile-button";
 import FollowButton from "@/components/follow-button";
 import FolloewerCount from "@/components/follower-count";
 import Linkify from "@/components/linkify";
@@ -48,7 +49,7 @@ export default async function UserProfile({
           </div>
         </div>
         {user.id === loggedInUserId ? (
-          <Button>Edit profile</Button>
+          <EditProfileButton user={user} />
         ) : (
           <FollowButton userId={user.id} initialState={followersInfo} />
         )}

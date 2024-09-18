@@ -1,6 +1,7 @@
 "use client";
 
 import { useSession } from "@/app/(main)/session-provider";
+import Linkify from "@/components/linkify";
 import PostMoreButton from "@/components/posts/post-more-button";
 import UserAvatar from "@/components/user-avatar";
 import { PostData } from "@/lib/types";
@@ -43,7 +44,9 @@ export default function Post({ post }: PostProps) {
           />
         ) : null}
       </div>
-      <div className="whitespace-pre-line break-words">{post.content}</div>
+      <Linkify>
+        <div className="whitespace-pre-line break-words">{post.content}</div>
+      </Linkify>
     </article>
   );
 }

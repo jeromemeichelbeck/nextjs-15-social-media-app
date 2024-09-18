@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   description: "The social media app for powernerds",
 };
 
-export default function RootLayout({ children }: PropsWithChildren<{}>) {
+export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>

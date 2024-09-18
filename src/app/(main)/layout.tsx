@@ -5,7 +5,7 @@ import { validateRequest } from "@/auth";
 import { redirect } from "next/navigation";
 import { PropsWithChildren, ReactNode } from "react";
 
-export default async function MainLayout({ children }: PropsWithChildren<{}>) {
+export default async function MainLayout({ children }: PropsWithChildren) {
   const sessionContext = await validateRequest();
 
   if (sessionContext.user === null) {

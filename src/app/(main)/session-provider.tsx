@@ -8,12 +8,16 @@ interface SessionContext {
   session: Session;
 }
 
+interface SessionProviderProps extends PropsWithChildren {
+  value: SessionContext;
+}
+
 const SessionContext = createContext<SessionContext | null>(null);
 
 export default function SessionProvider({
   children,
   value,
-}: PropsWithChildren<{ value: SessionContext }>) {
+}: SessionProviderProps) {
   return (
     <SessionContext.Provider value={value}>{children}</SessionContext.Provider>
   );

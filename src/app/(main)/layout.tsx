@@ -9,6 +9,7 @@ export default async function MainLayout({ children }: PropsWithChildren<{}>) {
   const sessionContext = await validateRequest();
 
   if (sessionContext.user === null) {
+    //ANCHOR[id=redirect-to-login] - Redirect if not logged in
     redirect("/login");
   }
 

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { TypeOf, z } from "zod";
 
 // utils
 const requiredString = z.string().trim().min(1, "Required");
@@ -44,3 +44,11 @@ export type CreatePostValues = z.infer<typeof createPostSchema>;
 export const createPostDefaultValues = {
   content: "",
 } satisfies CreatePostValues;
+
+// User
+export const updateUserProfileSchema = z.object({
+  displayName: requiredString,
+  bio: z.string().max(1000, "Must be at most 1000 characters").optional(),
+});
+
+export type UpdateUserProfileValues = z.infer<typeof updateUserProfileSchema>;

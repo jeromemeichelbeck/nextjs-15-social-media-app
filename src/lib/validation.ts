@@ -37,12 +37,16 @@ export const loginDefaultsValues = {
 // Post
 export const createPostSchema = z.object({
   content: requiredString,
+  mediaIds: z
+    .array(z.string())
+    .max(5, " Cannot have more than 5 attachments in one post"),
 });
 
 export type CreatePostValues = z.infer<typeof createPostSchema>;
 
 export const createPostDefaultValues = {
   content: "",
+  mediaIds: [],
 } satisfies CreatePostValues;
 
 // User

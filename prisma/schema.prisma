@@ -36,10 +36,10 @@ model User {
 
 model Session {
   id        String   @id
-  userId    String
   expiresAt DateTime
 
-  user User @relation(references: [id], fields: [userId], onDelete: Cascade)
+  userId String
+  user   User   @relation(references: [id], fields: [userId], onDelete: Cascade)
 
   @@map("bb_sessions")
 }
@@ -56,13 +56,32 @@ model Follow {
 }
 
 model Post {
-  id       String @id @default(cuid())
-  content  String
-  authorId String
+  id          String  @id @default(cuid())
+  content     String
+  attachments Media[]
 
-  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 
   @@map("bb_posts")
+}
+
+model Media {
+  id   String    @id @default(cuid())
+  type MediaType
+  url  String
+
+  postId String?
+  post   Post?   @relation(fields: [postId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+
+  @@map("bb_post_medias")
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
 }

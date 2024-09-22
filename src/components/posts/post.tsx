@@ -2,6 +2,7 @@
 
 import { useSession } from "@/app/(main)/session-provider";
 import Linkify from "@/components/linkify";
+import LikeButton from "@/components/posts/likes/like-button";
 import MediaPreviews from "@/components/posts/media-previews";
 import PostMoreButton from "@/components/posts/post-more-button";
 import UserAvatar from "@/components/user/user-avatar";
@@ -57,6 +58,13 @@ export default function Post({ post }: PostProps) {
       {post.attachments.length > 0 ? (
         <MediaPreviews attachments={post.attachments} />
       ) : null}
+      <LikeButton
+        postId={post.id}
+        initialState={{
+          likes: post._count.likes,
+          isLikedByUser: post.likes.some((like) => like.userId === user.id),
+        }}
+      />
     </article>
   );
 }

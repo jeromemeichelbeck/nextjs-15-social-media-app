@@ -26,6 +26,19 @@ export const getUserDataSelect = (loggedInUserId: string) =>
 
 export const getPostDataInclude = (loggedInUserId: string) =>
   ({
+    likes: {
+      where: {
+        userId: loggedInUserId,
+      },
+      select: {
+        userId: true,
+      },
+    },
+    _count: {
+      select: {
+        likes: true,
+      },
+    },
     author: {
       select: getUserDataSelect(loggedInUserId),
     },
@@ -49,3 +62,8 @@ export interface FollowerInfo {
 export type UserData = Prisma.UserGetPayload<{
   select: ReturnType<typeof getUserDataSelect>;
 }>;
+
+export type LikesInfo = {
+  likes: number;
+  isLikedByUser: boolean;
+};

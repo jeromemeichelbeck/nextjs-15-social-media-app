@@ -9,10 +9,24 @@ import StarterKit from "@tiptap/starter-kit";
 import { useSubmitPostMutation } from "@/components/posts/editor/mutations";
 import LoadingButton from "@/components/ui/loading-button";
 import "./styles.css";
+import useMediaUpload from "@/components/posts/editor/useMediaUpload";
+import AddAttachmentsButton from "@/components/posts/editor/add-attachments-button";
 
 export default function PostEditor() {
   const { user } = useSession();
+
   const mutation = useSubmitPostMutation();
+
+  const {
+    startUpload,
+    attachments,
+    isUploading,
+    uploadProgress,
+    removeAttachment,
+    reset: resetMediaUpload,
+  } = useMediaUpload();
+
+  console.log({ attachments });
 
   const editor = useEditor({
     extensions: [
@@ -33,10 +47,16 @@ export default function PostEditor() {
 
   function onSubmit() {
     mutation.mutate(
-      { content: input },
+      {
+        content: input,
+        mediaIds: attachments
+          .map((attachment) => attachment.mediaId)
+          .filter((mediaId) => mediaId !== undefined),
+      },
       {
         onSuccess: () => {
           editor?.commands.clearContent();
+          resetMediaUpload();
         },
       },
     );
@@ -51,7 +71,11 @@ export default function PostEditor() {
           className="max-h-[20rem] w-full overflow-y-auto rounded-2xl bg-background px-5 py-3"
         />
       </div>
-      <div className="flex justify-end">
+      <div className="flex items-center justify-end gap-3">
+        <AddAttachmentsButton
+          onFilesSelected={startUpload}
+          disabled={isUploading || attachments.length >= 5}
+        />
         <LoadingButton
           onClick={onSubmit}
           disabled={input.trim() === ""}

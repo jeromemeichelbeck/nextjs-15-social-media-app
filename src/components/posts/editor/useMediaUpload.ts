@@ -17,7 +17,7 @@ export default function useMediaUpload() {
   const { startUpload, isUploading } = useUploadThing("attachment", {
     onBeforeUploadBegin(files) {
       const renamedFiles = files.map((file) => {
-        const [_, extension] = file.name.split("0");
+        const extension = file.name.split(".").at(-1);
 
         return new File(
           [file],

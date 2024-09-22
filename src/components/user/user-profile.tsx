@@ -1,9 +1,9 @@
 import EditProfileButton from "@/app/(main)/users/[username]/edit-profile-button";
-import FollowButton from "@/components/follow-button";
-import FolloewerCount from "@/components/follower-count";
+import FollowButton from "@/components/followers/follow-button";
+import FolloewerCount from "@/components/followers/follower-count";
 import Linkify from "@/components/linkify";
 import { Button } from "@/components/ui/button";
-import UserAvatar from "@/components/user-avatar";
+import UserAvatar from "@/components/user/user-avatar";
 import { FollowerInfo, UserData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
 import { formatDate } from "date-fns";

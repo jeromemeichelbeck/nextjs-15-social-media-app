@@ -1,5 +1,5 @@
 import SearchField from "@/components/search-field";
-import UserButton from "@/components/user-button";
+import UserButton from "@/components/user/user-button";
 import Link from "next/link";
 
 export default function Navbar() {

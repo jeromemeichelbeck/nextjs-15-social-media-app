@@ -1,6 +1,6 @@
 "use client";
 
-import { followUser, unfollowUser } from "@/components/actions";
+import { followUser, unfollowUser } from "@/components/followers/actions";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import useFollowerInfo from "@/hooks/useFollowerInfo";

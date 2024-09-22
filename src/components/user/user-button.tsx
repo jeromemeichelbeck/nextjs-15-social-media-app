@@ -11,9 +11,9 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useSession } from "../app/(main)/session-provider";
+import { useSession } from "../../app/(main)/session-provider";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-import UserAvatar from "@/components/user-avatar";
+import UserAvatar from "@/components/user/user-avatar";
 import Link from "next/link";
 import {
   CheckIcon,

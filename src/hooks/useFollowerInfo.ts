@@ -1,4 +1,4 @@
-import { getFollowersInfo } from "@/components/actions";
+import { getFollowersInfo } from "@/components/followers/actions";
 import { FollowerInfo } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
 

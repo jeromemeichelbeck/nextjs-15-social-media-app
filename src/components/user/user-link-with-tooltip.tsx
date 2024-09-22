@@ -1,7 +1,7 @@
 "use client";
 
-import { getUserDataByUsername } from "@/components/actions";
-import UserTooltip from "@/components/user-tooltip";
+import { getUserDataByUsername } from "@/components/user/actions";
+import UserTooltip from "@/components/user/user-tooltip";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { PropsWithChildren } from "react";

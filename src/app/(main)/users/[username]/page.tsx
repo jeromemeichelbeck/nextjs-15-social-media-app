@@ -1,11 +1,11 @@
 import UserPosts from "@/app/(main)/users/[username]/user-posts";
 import { validateRequest } from "@/auth";
 import TrendsSidebar from "@/components/trends-sidebar";
-import UserProfile from "@/components/user-profile";
+import UserProfile from "@/components/user/user-profile";
 import prisma from "@/lib/prisma";
 import { getUserDataSelect } from "@/lib/types";
 import { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { cache } from "react";
 
 interface ProfilePageProps {

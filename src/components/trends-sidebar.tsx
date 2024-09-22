@@ -1,8 +1,8 @@
 import { validateRequest } from "@/auth";
-import FollowButton from "@/components/follow-button";
+import FollowButton from "@/components/followers/follow-button";
 import { Button } from "@/components/ui/button";
-import UserAvatar from "@/components/user-avatar";
-import UserTooltip from "@/components/user-tooltip";
+import UserAvatar from "@/components/user/user-avatar";
+import UserTooltip from "@/components/user/user-tooltip";
 import prisma from "@/lib/prisma";
 import { getUserDataSelect } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";

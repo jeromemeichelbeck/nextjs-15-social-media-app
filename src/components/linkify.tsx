@@ -1,4 +1,4 @@
-import UserLinkWithTooltip from "@/components/user-link-with-tooltip";
+import UserLinkWithTooltip from "@/components/user/user-link-with-tooltip";
 import Link from "next/link";
 import { PropsWithChildren } from "react";
 import { LinkIt, LinkItUrl } from "react-linkify-it";

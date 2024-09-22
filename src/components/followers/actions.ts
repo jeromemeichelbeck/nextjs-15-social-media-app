@@ -2,7 +2,7 @@
 
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
-import { FollowerInfo, getUserDataSelect } from "@/lib/types";
+import { FollowerInfo } from "@/lib/types";
 
 export async function getFollowersInfo(userId: string) {
   const { user: loggedInUser } = await validateRequest();
@@ -77,29 +77,4 @@ export async function unfollowUser(userId: string) {
       followingId: userId,
     },
   });
-}
-
-export async function getUserDataByUsername(username: string) {
-  console.log("fetching data for user", username);
-  const { user: loggedInUser } = await validateRequest();
-
-  if (loggedInUser === null) {
-    throw new Error("Unauthorized");
-  }
-
-  const user = await prisma.user.findFirst({
-    where: {
-      username: {
-        equals: username,
-        mode: "insensitive",
-      },
-    },
-    select: getUserDataSelect(loggedInUser.id),
-  });
-
-  if (user === null) {
-    throw new Error("User not found");
-  }
-
-  return user;
 }

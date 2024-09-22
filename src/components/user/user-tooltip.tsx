@@ -1,8 +1,8 @@
 "use client";
 
 import { useSession } from "@/app/(main)/session-provider";
-import FollowButton from "@/components/follow-button";
-import FolloewerCount from "@/components/follower-count";
+import FollowButton from "@/components/followers/follow-button";
+import FolloewerCount from "@/components/followers/follower-count";
 import Linkify from "@/components/linkify";
 import {
   Tooltip,
@@ -10,7 +10,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import UserAvatar from "@/components/user-avatar";
+import UserAvatar from "@/components/user/user-avatar";
 import { FollowerInfo, UserData } from "@/lib/types";
 import Link from "next/link";
 import { PropsWithChildren } from "react";

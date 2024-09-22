@@ -11,6 +11,8 @@ import LoadingButton from "@/components/ui/loading-button";
 import "./styles.css";
 import useMediaUpload from "@/components/posts/editor/useMediaUpload";
 import AddAttachmentsButton from "@/components/posts/editor/add-attachments-button";
+import AttachmentPreviews from "@/components/posts/editor/attachment-previews";
+import { Loader2 } from "lucide-react";
 
 export default function PostEditor() {
   const { user } = useSession();
@@ -25,8 +27,6 @@ export default function PostEditor() {
     removeAttachment,
     reset: resetMediaUpload,
   } = useMediaUpload();
-
-  console.log({ attachments });
 
   const editor = useEditor({
     extensions: [
@@ -71,14 +71,26 @@ export default function PostEditor() {
           className="max-h-[20rem] w-full overflow-y-auto rounded-2xl bg-background px-5 py-3"
         />
       </div>
+      {attachments.length > 0 ? (
+        <AttachmentPreviews
+          attachments={attachments}
+          removeAttachment={removeAttachment}
+        />
+      ) : null}
       <div className="flex items-center justify-end gap-3">
+        {isUploading ? (
+          <>
+            <span className="text-sm">{uploadProgress ?? 0}%</span>
+            <Loader2 className="size-5 animate-spin text-primary" />
+          </>
+        ) : null}
         <AddAttachmentsButton
           onFilesSelected={startUpload}
           disabled={isUploading || attachments.length >= 5}
         />
         <LoadingButton
           onClick={onSubmit}
-          disabled={input.trim() === ""}
+          disabled={input.trim() === "" || isUploading}
           className="min-w-20"
           loading={mutation.isPending}
         >

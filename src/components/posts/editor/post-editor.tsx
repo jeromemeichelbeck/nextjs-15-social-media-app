@@ -6,13 +6,15 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
-import { useSubmitPostMutation } from "@/components/posts/editor/mutations";
-import LoadingButton from "@/components/ui/loading-button";
-import "./styles.css";
-import useMediaUpload from "@/components/posts/editor/useMediaUpload";
 import AddAttachmentsButton from "@/components/posts/editor/add-attachments-button";
 import AttachmentPreviews from "@/components/posts/editor/attachment-previews";
+import { useSubmitPostMutation } from "@/components/posts/editor/mutations";
+import useMediaUpload from "@/components/posts/editor/useMediaUpload";
+import LoadingButton from "@/components/ui/loading-button";
+import { useDropzone } from "@uploadthing/react";
 import { Loader2 } from "lucide-react";
+import "./styles.css";
+import { cn } from "@/lib/utils";
 
 export default function PostEditor() {
   const { user } = useSession();
@@ -27,6 +29,12 @@ export default function PostEditor() {
     removeAttachment,
     reset: resetMediaUpload,
   } = useMediaUpload();
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop: startUpload,
+  });
+
+  const { onClick: _, ...rootProps } = getRootProps();
 
   const editor = useEditor({
     extensions: [
@@ -66,10 +74,16 @@ export default function PostEditor() {
     <div className="flex flex-col gap-5 rounded-2xl bg-card p-5 shadow-sm">
       <div className="flex gap-5">
         <UserAvatar avatarUrl={user.avatarUrl} className="hidden sm:inline" />
-        <EditorContent
-          editor={editor}
-          className="max-h-[20rem] w-full overflow-y-auto rounded-2xl bg-background px-5 py-3"
-        />
+        <div {...rootProps} className="w-full">
+          <EditorContent
+            editor={editor}
+            className={cn(
+              "max-h-[20rem] w-full overflow-y-auto rounded-2xl bg-background px-5 py-3",
+              isDragActive && "outline-dashed",
+            )}
+          />
+          <input {...getInputProps()} />
+        </div>
       </div>
       {attachments.length > 0 ? (
         <AttachmentPreviews

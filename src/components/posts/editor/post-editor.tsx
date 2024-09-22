@@ -11,10 +11,11 @@ import AttachmentPreviews from "@/components/posts/editor/attachment-previews";
 import { useSubmitPostMutation } from "@/components/posts/editor/mutations";
 import useMediaUpload from "@/components/posts/editor/useMediaUpload";
 import LoadingButton from "@/components/ui/loading-button";
+import { cn } from "@/lib/utils";
 import { useDropzone } from "@uploadthing/react";
 import { Loader2 } from "lucide-react";
+import { ClipboardEvent } from "react";
 import "./styles.css";
-import { cn } from "@/lib/utils";
 
 export default function PostEditor() {
   const { user } = useSession();
@@ -70,6 +71,15 @@ export default function PostEditor() {
     );
   }
 
+  function onPaste(e: ClipboardEvent<HTMLInputElement>) {
+    const files = Array.from(e.clipboardData.items)
+      .filter((item) => item.kind === "file")
+      .map((item) => item.getAsFile())
+      .filter((file) => file !== null);
+
+    startUpload(files);
+  }
+
   return (
     <div className="flex flex-col gap-5 rounded-2xl bg-card p-5 shadow-sm">
       <div className="flex gap-5">
@@ -77,6 +87,7 @@ export default function PostEditor() {
         <div {...rootProps} className="w-full">
           <EditorContent
             editor={editor}
+            onPaste={onPaste}
             className={cn(
               "max-h-[20rem] w-full overflow-y-auto rounded-2xl bg-background px-5 py-3",
               isDragActive && "outline-dashed",

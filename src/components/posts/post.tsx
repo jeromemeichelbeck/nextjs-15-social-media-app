@@ -2,6 +2,7 @@
 
 import { useSession } from "@/app/(main)/session-provider";
 import Linkify from "@/components/linkify";
+import MediaPreviews from "@/components/posts/media-previews";
 import PostMoreButton from "@/components/posts/post-more-button";
 import UserAvatar from "@/components/user-avatar";
 import UserTooltip from "@/components/user-tooltip";
@@ -52,6 +53,9 @@ export default function Post({ post }: PostProps) {
       <Linkify>
         <div className="whitespace-pre-line break-words">{post.content}</div>
       </Linkify>
+      {post.attachments.length > 0 ? (
+        <MediaPreviews attachments={post.attachments} />
+      ) : null}
     </article>
   );
 }

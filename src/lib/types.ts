@@ -29,6 +29,7 @@ export const getPostDataInclude = (loggedInUserId: string) =>
     author: {
       select: getUserDataSelect(loggedInUserId),
     },
+    attachments: true,
   }) satisfies Prisma.PostInclude;
 
 export type PostData = Prisma.PostGetPayload<{

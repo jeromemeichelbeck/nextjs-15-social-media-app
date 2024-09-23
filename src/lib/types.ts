@@ -39,6 +39,14 @@ export const getPostDataInclude = (loggedInUserId: string) =>
         likes: true,
       },
     },
+    bookmarks: {
+      where: {
+        userId: loggedInUserId,
+      },
+      select: {
+        userId: true,
+      },
+    },
     author: {
       select: getUserDataSelect(loggedInUserId),
     },
@@ -66,4 +74,8 @@ export type UserData = Prisma.UserGetPayload<{
 export type LikesInfo = {
   likes: number;
   isLikedByUser: boolean;
+};
+
+export type BookmarksInfo = {
+  isBookmarkedByUser: boolean;
 };

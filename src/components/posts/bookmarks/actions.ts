@@ -2,7 +2,7 @@
 
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
-import { BookmarkInfo } from "@/lib/types";
+import { BookmarkInfo, getPostDataInclude, PostsPage } from "@/lib/types";
 
 export async function getBookmarkInfo(postId: string) {
   const { user: loggedInUser } = await validateRequest();
@@ -62,4 +62,40 @@ export async function removeBookmark(postId: string) {
       postId,
     },
   });
+}
+
+export async function getBookmarkedPosts(cursor: string | null) {
+  const { user: loggedInUser } = await validateRequest();
+
+  if (loggedInUser === null) {
+    throw new Error("Unauthorized");
+  }
+
+  const pageSize = 10;
+
+  const bookmarks = await prisma.bookmark.findMany({
+    where: {
+      userId: loggedInUser.id,
+    },
+    include: {
+      post: {
+        include: getPostDataInclude(loggedInUser.id),
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: pageSize + 1,
+    cursor: cursor ? { id: cursor } : undefined,
+  });
+
+  const nextCursor =
+    bookmarks.length > pageSize ? bookmarks[pageSize].id : null;
+
+  const data: PostsPage = {
+    posts: bookmarks.slice(0, pageSize).map((bookmark) => bookmark.post),
+    nextCursor,
+  };
+
+  return data;
 }

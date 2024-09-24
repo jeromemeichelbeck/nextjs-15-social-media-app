@@ -34,7 +34,7 @@ export default function LikeButton({ postId, initialState }: LikeButtonProps) {
 
   const { mutate } = useMutation({
     mutationFn: () =>
-      data?.isLikedByUser ? removeLike(postId) : likePost(postId),
+      data.isLikedByUser ? removeLike(postId) : likePost(postId),
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey });
 

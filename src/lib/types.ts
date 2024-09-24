@@ -76,6 +76,6 @@ export type LikesInfo = {
   isLikedByUser: boolean;
 };
 
-export type BookmarksInfo = {
+export type BookmarkInfo = {
   isBookmarkedByUser: boolean;
 };

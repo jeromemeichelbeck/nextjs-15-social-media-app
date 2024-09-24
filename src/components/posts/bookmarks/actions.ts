@@ -2,7 +2,7 @@
 
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
-import { BookmarksInfo } from "@/lib/types";
+import { BookmarkInfo } from "@/lib/types";
 
 export async function getBookmarkInfo(postId: string) {
   const { user: loggedInUser } = await validateRequest();
@@ -20,7 +20,7 @@ export async function getBookmarkInfo(postId: string) {
     },
   });
 
-  const data: BookmarksInfo = {
+  const data: BookmarkInfo = {
     isBookmarkedByUser: bookmark !== null,
   };
 

@@ -2,6 +2,7 @@
 
 import { useSession } from "@/app/(main)/session-provider";
 import Linkify from "@/components/linkify";
+import BookmarkButton from "@/components/posts/bookmarks/bookmark-button";
 import LikeButton from "@/components/posts/likes/like-button";
 import MediaPreviews from "@/components/posts/media-previews";
 import PostMoreButton from "@/components/posts/post-more-button";
@@ -16,7 +17,7 @@ interface PostProps {
 }
 
 export default function Post({ post }: PostProps) {
-  const { user } = useSession();
+  const { user: loggedInUser } = useSession();
 
   return (
     <article className="group/post space-y-3 rounded-2xl bg-card p-5 shadow-sm">
@@ -45,7 +46,7 @@ export default function Post({ post }: PostProps) {
             </Link>
           </div>
         </div>
-        {post.authorId === user.id ? (
+        {post.authorId === loggedInUser.id ? (
           <PostMoreButton
             post={post}
             className="opacity-0 transition-opacity group-hover/post:opacity-100"
@@ -58,13 +59,25 @@ export default function Post({ post }: PostProps) {
       {post.attachments.length > 0 ? (
         <MediaPreviews attachments={post.attachments} />
       ) : null}
-      <LikeButton
-        postId={post.id}
-        initialState={{
-          likes: post._count.likes,
-          isLikedByUser: post.likes.some((like) => like.userId === user.id),
-        }}
-      />
+      <div className="flex justify-between">
+        <LikeButton
+          postId={post.id}
+          initialState={{
+            likes: post._count.likes,
+            isLikedByUser: post.likes.some(
+              (like) => like.userId === loggedInUser.id,
+            ),
+          }}
+        />
+        <BookmarkButton
+          postId={post.id}
+          initialState={{
+            isBookmarkedByUser: post.bookmarks.some(
+              (bookmark) => bookmark.userId === loggedInUser.id,
+            ),
+          }}
+        />
+      </div>
     </article>
   );
 }

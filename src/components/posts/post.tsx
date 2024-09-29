@@ -1,8 +1,10 @@
 "use client";
 
 import { useSession } from "@/app/(main)/session-provider";
+import Comments from "@/components/comments/comments";
 import Linkify from "@/components/linkify";
 import BookmarkButton from "@/components/posts/bookmarks/bookmark-button";
+import CommentsButton from "@/components/posts/comments-button";
 import LikeButton from "@/components/posts/likes/like-button";
 import MediaPreviews from "@/components/posts/media-previews";
 import PostMoreButton from "@/components/posts/post-more-button";
@@ -11,12 +13,15 @@ import UserTooltip from "@/components/user/user-tooltip";
 import { PostData } from "@/lib/types";
 import { formatRelativeDate } from "@/lib/utils";
 import Link from "next/link";
+import { useState } from "react";
 
 interface PostProps {
   post: PostData;
 }
 
 export default function Post({ post }: PostProps) {
+  const [showComments, setShowComments] = useState(false);
+
   const { user: loggedInUser } = useSession();
 
   return (
@@ -59,16 +64,22 @@ export default function Post({ post }: PostProps) {
       {post.attachments.length > 0 ? (
         <MediaPreviews attachments={post.attachments} />
       ) : null}
-      <div className="flex justify-between">
-        <LikeButton
-          postId={post.id}
-          initialState={{
-            likes: post._count.likes,
-            isLikedByUser: post.likes.some(
-              (like) => like.userId === loggedInUser.id,
-            ),
-          }}
-        />
+      <div className="flex justify-between gap-5">
+        <div className="flex items-center gap-5">
+          <LikeButton
+            postId={post.id}
+            initialState={{
+              likes: post._count.likes,
+              isLikedByUser: post.likes.some(
+                (like) => like.userId === loggedInUser.id,
+              ),
+            }}
+          />
+          <CommentsButton
+            post={post}
+            onClick={() => setShowComments((currentValue) => !currentValue)}
+          />
+        </div>
         <BookmarkButton
           postId={post.id}
           initialState={{
@@ -78,6 +89,7 @@ export default function Post({ post }: PostProps) {
           }}
         />
       </div>
+      {showComments ? <Comments post={post} /> : null}
     </article>
   );
 }

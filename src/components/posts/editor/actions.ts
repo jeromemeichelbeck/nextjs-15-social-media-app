@@ -6,9 +6,9 @@ import { getPostDataInclude } from "@/lib/types";
 import { createPostSchema, CreatePostValues } from "@/lib/validation";
 
 export async function submitPost(post: CreatePostValues) {
-  const { user } = await validateRequest();
+  const { user: loggedInUser } = await validateRequest();
 
-  if (user === null) {
+  if (loggedInUser === null) {
     throw Error("Unauthorized");
   }
 
@@ -17,11 +17,11 @@ export async function submitPost(post: CreatePostValues) {
   return prisma.post.create({
     data: {
       content,
-      authorId: user.id,
+      authorId: loggedInUser.id,
       attachments: {
         connect: mediaIds.map((mediaId) => ({ id: mediaId })),
       },
     },
-    include: getPostDataInclude(user.id),
+    include: getPostDataInclude(loggedInUser.id),
   });
 }

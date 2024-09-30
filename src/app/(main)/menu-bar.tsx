@@ -1,3 +1,6 @@
+import NotificationButton from "@/app/(main)/notifications-button";
+import { validateRequest } from "@/auth";
+import { getUnreadNotificationsCount } from "@/components/notifications/actions";
 import { Button } from "@/components/ui/button";
 import { BellIcon, BookmarkIcon, HomeIcon, MailIcon } from "lucide-react";
 import Link from "next/link";
@@ -6,7 +9,9 @@ interface MenuBarProps {
   className?: string;
 }
 
-export default function MenuBar({ className }: MenuBarProps) {
+export default async function MenuBar({ className }: MenuBarProps) {
+  const unreadNotificationsCount = await getUnreadNotificationsCount();
+
   return (
     <div className={className}>
       <Button
@@ -20,17 +25,7 @@ export default function MenuBar({ className }: MenuBarProps) {
           <span className="hidden lg:inline">Home</span>
         </Link>
       </Button>
-      <Button
-        variant="ghost"
-        className="flex items-center justify-start gap-3"
-        title="Notifications"
-        asChild
-      >
-        <Link href="/notifications">
-          <BellIcon className="size-4" />
-          <span className="hidden lg:inline">Notifications</span>
-        </Link>
-      </Button>
+      <NotificationButton initialCount={unreadNotificationsCount} />
       <Button
         variant="ghost"
         className="flex items-center justify-start gap-3"

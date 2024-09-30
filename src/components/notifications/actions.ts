@@ -36,30 +36,32 @@ export async function getNotifications(cursor: string | null) {
   return data;
 }
 
-export async function markNotificationAsRead(notificationId: string) {
+export async function getUnreadNotificationsCount() {
   const { user: loggedInUser } = await validateRequest();
 
   if (loggedInUser === null) {
     throw new Error("Unauthorized");
   }
 
-  const notificationToMarkAsRead = await prisma.notification.findUnique({
+  return prisma.notification.count({
     where: {
-      id: notificationId,
+      recipientId: loggedInUser.id,
+      read: false,
     },
   });
+}
 
-  if (notificationToMarkAsRead === null) {
-    throw new Error("Notification not found");
+export async function markNotificationsAsRead() {
+  const { user: loggedInUser } = await validateRequest();
+
+  if (loggedInUser === null) {
+    throw new Error("Unauthorized");
   }
 
-  if (notificationToMarkAsRead.issuerId !== loggedInUser.id) {
-    throw new Error("User does not own the notification to mark as read");
-  }
-
-  return prisma.notification.update({
+  return prisma.notification.updateMany({
     where: {
-      id: notificationId,
+      issuerId: loggedInUser.id,
+      read: false,
     },
     data: {
       read: true,

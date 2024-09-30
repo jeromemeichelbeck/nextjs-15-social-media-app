@@ -30,6 +30,7 @@ export function useSubmitPostMutation() {
       } satisfies QueryFilters;
 
       await queryClient.cancelQueries(queryFilters);
+
       queryClient.setQueriesData<InfiniteData<PostsPage, string | null>>(
         queryFilters,
         (currentData) => {
@@ -43,7 +44,7 @@ export function useSubmitPostMutation() {
                   posts: [newPost, ...firstPage.posts],
                   nextCursor: firstPage.nextCursor,
                 },
-                ...currentData?.pages.slice(1),
+                ...currentData.pages.slice(1),
               ],
             };
           }

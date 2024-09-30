@@ -51,19 +51,45 @@ export async function likePost(postId: string) {
     throw new Error("Unauthorized");
   }
 
-  await prisma.like.upsert({
-    where: {
-      userId_postId: {
+  const post = await prisma.post.findUnique({
+    where: { id: postId },
+    select: {
+      authorId: true,
+    },
+  });
+
+  if (post === null) {
+    throw new Error("Post not found");
+  }
+
+  await prisma.$transaction([
+    prisma.like.upsert({
+      where: {
+        userId_postId: {
+          userId: loggedInUser.id,
+          postId,
+        },
+      },
+      create: {
         userId: loggedInUser.id,
         postId,
       },
-    },
-    create: {
-      userId: loggedInUser.id,
-      postId,
-    },
-    update: {},
-  });
+      update: {},
+    }),
+
+    ...(post.authorId === loggedInUser.id
+      ? []
+      : [
+          prisma.notification.create({
+            data: {
+              type: "LIKE",
+              postId,
+              issuerId: loggedInUser.id,
+              recipientId: post.authorId,
+            },
+          }),
+        ]),
+  ]);
 }
 
 export async function removeLike(postId: string) {
@@ -73,10 +99,32 @@ export async function removeLike(postId: string) {
     throw new Error("Unauthorized");
   }
 
-  await prisma.like.deleteMany({
-    where: {
-      userId: loggedInUser.id,
-      postId,
+  const post = await prisma.post.findUnique({
+    where: { id: postId },
+    select: {
+      authorId: true,
     },
   });
+
+  if (post === null) {
+    throw new Error("Post not found");
+  }
+
+  await prisma.$transaction([
+    prisma.like.deleteMany({
+      where: {
+        userId: loggedInUser.id,
+        postId,
+      },
+    }),
+
+    prisma.notification.deleteMany({
+      where: {
+        issuerId: loggedInUser.id,
+        recipientId: post.authorId,
+        postId,
+        type: "LIKE",
+      },
+    }),
+  ]);
 }

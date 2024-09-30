@@ -23,6 +23,7 @@ export function useDeletePostMutation() {
       };
 
       await queryClient.cancelQueries(queryFilters);
+
       queryClient.setQueriesData<InfiniteData<PostsPage, string | null>>(
         queryFilters,
         (currentData) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useSubmitCommentMutation } from "@/components/mutations";
+import { useSubmitCommentMutation } from "@/components/comments/mutations";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PostData } from "@/lib/types";

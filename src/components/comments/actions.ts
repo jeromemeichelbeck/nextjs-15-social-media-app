@@ -64,3 +64,30 @@ export async function getPostComments({ postId, cursor }: GetPostCommentDTO) {
 
   return data;
 }
+
+export async function deleteComment(commentId: string) {
+  const { user: loggedInUser } = await validateRequest();
+
+  if (loggedInUser === null) {
+    throw new Error("Unauthorized");
+  }
+
+  const commentToDelete = await prisma.comment.findUnique({
+    where: {
+      id: commentId,
+    },
+  });
+
+  if (commentToDelete === null) {
+    throw new Error("Comment not found");
+  }
+
+  if (commentToDelete.authorId !== loggedInUser.id) {
+    throw new Error("USer does not own the comment to delete");
+  }
+
+  return prisma.comment.delete({
+    where: { id: commentId },
+    include: getCommentDataInclude(loggedInUser.id),
+  });
+}

@@ -19,14 +19,31 @@ export async function submitComment({ comment, post }: SubmitCommentDTO) {
 
   const { content } = createCommmentSchema.parse(comment);
 
-  return prisma.comment.create({
-    data: {
-      content,
-      postId: post.id,
-      authorId: loggedInUser.id,
-    },
-    include: getCommentDataInclude(loggedInUser.id),
-  });
+  const [addedComment] = await prisma.$transaction([
+    prisma.comment.create({
+      data: {
+        content,
+        postId: post.id,
+        authorId: loggedInUser.id,
+      },
+      include: getCommentDataInclude(loggedInUser.id),
+    }),
+
+    ...(post.authorId === loggedInUser.id
+      ? []
+      : [
+          prisma.notification.create({
+            data: {
+              type: "COMMENT",
+              issuerId: loggedInUser.id,
+              recipientId: post.authorId,
+              postId: post.id,
+            },
+          }),
+        ]),
+  ]);
+
+  return addedComment;
 }
 
 interface GetPostCommentDTO {

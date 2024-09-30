@@ -21,7 +21,7 @@ export default async function MenuBar({ className }: MenuBarProps) {
         asChild
       >
         <Link href="/">
-          <HomeIcon className="size-4" />
+          <HomeIcon className="size-6" />
           <span className="hidden lg:inline">Home</span>
         </Link>
       </Button>
@@ -33,7 +33,7 @@ export default async function MenuBar({ className }: MenuBarProps) {
         asChild
       >
         <Link href="/messages">
-          <MailIcon className="size-4" />
+          <MailIcon className="size-6" />
           <span className="hidden lg:inline">Messages</span>
         </Link>
       </Button>
@@ -44,7 +44,7 @@ export default async function MenuBar({ className }: MenuBarProps) {
         asChild
       >
         <Link href="/bookmarks">
-          <BookmarkIcon className="size-4" />
+          <BookmarkIcon className="size-6" />
           <span className="hidden lg:inline">Bookmarks</span>
         </Link>
       </Button>

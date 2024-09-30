@@ -29,7 +29,7 @@ export default function NotificationButton({
     >
       <Link href="/notifications">
         <div className="relative">
-          <BellIcon className="size-4" />
+          <BellIcon className="size-6" />
           {unreadCount > 0 ? (
             <span className="absolute -right-1 -top-1 rounded-full bg-primary px-1 text-xs font-medium tabular-nums text-primary-foreground">
               {unreadCount}
